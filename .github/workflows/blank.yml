@@ -1,40 +1,8 @@
-name: example-job
-on:
-  workflow_dispatch:
-    inputs:
-      camapp:
-        description: 'camapp_src commit-id or branch name'
-        default: 'main'
-        required: true
-        type: string
-      fwac:
-        description: 'FW_APP_CAM commit-id or branch name'
-        default: 'main'
-        required: true
-        type: string
-      ui:
-        description: 'New_WEBUI commit-id or branch name'
-        default: 'main'
-        required: true
-        type: string   
-      bfow:
-        description: 'New_WEBUI commit-id or branch name'
-        default: 'main'
-        required: true
-        type: string    
-      commit-id:
-        description: 'using commit-id'
-        default: false
-        required: true
-        type: boolean 
-
+name: Example Workflow
+on: [workflow_dispatch]
 jobs:
   example-job:
     runs-on: ubuntu-latest
     steps:
       - name: Print GitHub Run Number
-        run: echo "GitHub Run Number: ${{ github.run_number }}"}"
-
-          
-
-        
+        run: echo "GitHub Run Number: ${{ github.run_number }}"

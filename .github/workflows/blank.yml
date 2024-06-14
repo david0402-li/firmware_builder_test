@@ -1,4 +1,4 @@
-name: build-firmware-dev
+name: example-job
 on:
   workflow_dispatch:
     inputs:
@@ -26,46 +26,14 @@ on:
         description: 'using commit-id'
         default: false
         required: true
-        type: boolean     
+        type: boolean 
 
 jobs:
-  build-firmware-dev:
-    runs-on: software
+  example-job:
+    runs-on: ubuntu-latest
     steps:
-
-      - uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.TOKEN }}
-          fetch-depth: 0
-          path: ./dev/
-
-      - name: build firmware
-        working-directory: ./dev/
-        run: | 
-          pip install -r ./requirements.txt
-          python3 main.py -gtk=${{ secrets.TOKEN }} -fwr=${{ github.event.inputs.fwac }} -cmr=${{ github.event.inputs.camapp }} -uir=${{ github.event.inputs.ui }} -mcr=${{ github.event.inputs.bfow }} -s2e=true -v=DEV_$(./getlastreleasetag.sh).${{github.run_number}}  -cid=${{ github.event.inputs.commit-id }}
-
-      - name: Generate Change Log
-        working-directory: ./dev/
-        id: CHANGE_LOG
-        run: |
-          ls -l
-          ./gen_change_log.sh ./camapp_src-${{ github.event.inputs.camapp }}
-          ./gen_change_log.sh ./FW_APP_CAM-${{ github.event.inputs.fwac }}
-          ./gen_change_log.sh ./Camera_WebUI-${{ github.event.inputs.ui }}
-          ./gen_change_log.sh ./cam_bolin_mcu_fw-${{ github.event.inputs.bfow }}
-          cat changelog.md
-
-      - name: COPY output
-        working-directory: ./dev/
-        run: |
-          echo "copy path: /media/ext_2TB/dev_fw/camera/DEV_$(./getlastreleasetag.sh).${{github.run_number}}"
-          mkdir -p /media/ext_2TB/dev_fw/camera/DEV_$(./getlastreleasetag.sh).${{github.run_number}}
-          cp ./Generated/DEV_$(./getlastreleasetag.sh).${{github.run_number}}/BirdDog_CAM_DEV_$(./getlastreleasetag.sh).${{github.run_number}}.fw /media/ext_2TB/dev_fw/camera/DEV_$(./getlastreleasetag.sh).${{github.run_number}}/
-          cp ./changelog.md /media/ext_2TB/dev_fw/camera/DEV_$(./getlastreleasetag.sh).${{github.run_number}}/
-
-      - name: clean repo
-        run: rm -rf ./dev
+      - name: Print GitHub Run Number
+        run: echo "GitHub Run Number: ${{ github.run_number }}"}"
 
           
 
